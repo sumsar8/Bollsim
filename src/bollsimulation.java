@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class bollsimulation {
@@ -23,12 +24,23 @@ public class bollsimulation {
     }
 
     public static void runsimulation() {
-        int x = 10;
+        int x = 100;
         while(isballmoving == true){
+            DecimalFormat threedec = new DecimalFormat("#0.000");
+            DecimalFormat twodec = new DecimalFormat("#0.00");
 
-            time += 0.1;
-            System.out.println(time);
+            time += 0.01;
+            System.out.println(twodec.format(time));
 
+            velocity = time * gravitation;
+            System.out.print("velocity is ");
+            System.out.print(threedec.format(velocity));
+            System.out.println(" m/s");
+
+            bally = bally - 0.5 * (gravitation * time) * (gravitation * time);
+            System.out.print("height is ");
+            System.out.print(threedec.format(bally));
+            System.out.println(" m above ground");
             x--;
             if(x == 0) {
                 isballmoving = false;
