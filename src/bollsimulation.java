@@ -8,7 +8,12 @@ public class bollsimulation {
     private static double time = 0;
     private static double acceleration = 0;
     private static double velocity = 0;
+    private static double maxheight = bally;
+    private static double bouncecoefficient = 0.3;
+    private static double velocitytime = 0;
+    private static double minimumvelocity = 0.1;
     private static boolean isballmoving = true;
+    private static boolean down = true;
 
     public static void main(String[] args) {
 
@@ -32,18 +37,37 @@ public class bollsimulation {
             time += 0.01;
             System.out.println(twodec.format(time));
 
-            velocity = time * gravitation;
+
+
+            velocity = gravitation * velocitytime * velocitytime;
             System.out.print("velocity is ");
             System.out.print(threedec.format(velocity));
             System.out.println(" m/s");
 
-            bally = bally - 0.5 * (gravitation * time) * (gravitation * time);
+            if(down == true){
+                velocitytime += 0.01;
+                bally = bally - velocity;
+            }
+            if(down == false){
+                if (velocity < minimumvelocity) {
+                    down = true;
+                    velocity = 0.1;
+                    System.out.println("Switching fall vt = " +velocitytime);
+                }
+                velocitytime -= 0.01;
+                bally = bally + velocity;
+            }
+            if(bally <= 0){
+                down = false;
+            }
             System.out.print("height is ");
             System.out.print(threedec.format(bally));
             System.out.println(" m above ground");
+
             x--;
             if(x == 0) {
                 isballmoving = false;
+                velocity *= bouncecoefficient;
             }
             }
         }
