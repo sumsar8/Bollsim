@@ -2,18 +2,13 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 public class bollsimulation {
-    private static double bally = 10;
-    private static double ballweight = 1;
-    private static double gravitation = 9.82;
+    private static double bally = 100;
+    private static double deltaT = 0.01;
+    private static double gravitation = 9.8;
     private static double time = 0;
-    private static double acceleration = 0;
     private static double velocity = 0;
-    private static double maxheight = bally;
-    private static double bouncecoefficient = 0.3;
-    private static double velocitytime = 0;
-    private static double minimumvelocity = 0.1;
     private static boolean isballmoving = true;
-    private static boolean down = true;
+    private static char ballbounce = 0;
 
     public static void main(String[] args) {
 
@@ -29,47 +24,46 @@ public class bollsimulation {
     }
 
     public static void runsimulation() {
-        int x = 100;
-        while(isballmoving == true){
+        int x = 470;
+        while (isballmoving == true) {
             DecimalFormat threedec = new DecimalFormat("#0.000");
             DecimalFormat twodec = new DecimalFormat("#0.00");
 
-            time += 0.01;
-            System.out.println(twodec.format(time));
+            time += deltaT;
+            PrintValues(twodec, "Time is ", time, " s");
 
-
-
-            velocity = gravitation * velocitytime * velocitytime;
-            System.out.print("velocity is ");
-            System.out.print(threedec.format(velocity));
-            System.out.println(" m/s");
-
-            if(down == true){
-                velocitytime += 0.01;
-                bally = bally - velocity;
-            }
-            if(down == false){
-                if (velocity < minimumvelocity) {
-                    down = true;
-                    velocity = 0.1;
-                    System.out.println("Switching fall vt = " +velocitytime);
+            if(ballbounce == 0) {
+                velocity = gravitation * (time * time);
+                bally = 100 - ((gravitation * time * time) / 2);
+                if(bally <= 0) {
+                    ballbounce = 1;
                 }
-                velocitytime -= 0.01;
-                bally = bally + velocity;
             }
-            if(bally <= 0){
-                down = false;
+            if(ballbounce == 1){
+                velocity = gravitation * (time * time);
+                bally = 100 - ((gravitation * time * time) / 2);
+                if(bally <= 0) {
+                    ballbounce = 1;
+                }
             }
-            System.out.print("height is ");
-            System.out.print(threedec.format(bally));
-            System.out.println(" m above ground");
+
+            PrintValues(threedec, "velocity is ", velocity, " m/s");
+            PrintValues(threedec, "height is ", bally, " m above ground");
 
             x--;
-            if(x == 0) {
+            if (x == 0) {
                 isballmoving = false;
-                velocity *= bouncecoefficient;
-            }
             }
         }
     }
+
+
+
+
+    private static void PrintValues(DecimalFormat threedec, String s, double velocity, String s2) {
+        System.out.print(s);
+        System.out.print(threedec.format(velocity));
+        System.out.println(s2);
+    }
+}
 
